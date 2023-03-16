@@ -8,7 +8,8 @@ namespace j2534 {
 class J2534Channel final {
 public:
   explicit J2534Channel(J2534 &j2534, unsigned long ProtocolID,
-                        unsigned long Flags, unsigned long Baudrate, unsigned long TxFlags);
+                        unsigned long Flags, unsigned long Baudrate,
+                        unsigned long TxFlags);
   ~J2534Channel();
 
   J2534_ERROR_CODE readMsgs(std::vector<PASSTHRU_MSG> &msgs,

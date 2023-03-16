@@ -6,8 +6,8 @@ namespace j2534 {
 
 class BaseMessage {
 public:
-  virtual std::vector<PASSTHRU_MSG> toPassThruMsgs(unsigned long ProtocolID,
-                                           unsigned long Flags) const = 0;
+  virtual std::vector<PASSTHRU_MSG>
+  toPassThruMsgs(unsigned long ProtocolID, unsigned long Flags) const = 0;
 };
 
-}
+} // namespace j2534

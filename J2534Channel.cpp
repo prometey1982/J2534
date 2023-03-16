@@ -5,13 +5,13 @@
 namespace j2534 {
 
 J2534Channel::J2534Channel(J2534 &j2534, unsigned long ProtocolID,
-                           unsigned long Flags, unsigned long Baudrate, unsigned long TxFlags)
-    : _j2534{j2534}
-    , _protocolId(ProtocolID)
-    , _txFlags(TxFlags) {
-    const auto result = _j2534.PassThruConnect(ProtocolID, Flags, Baudrate, _channelID);
+                           unsigned long Flags, unsigned long Baudrate,
+                           unsigned long TxFlags)
+    : _j2534{j2534}, _protocolId(ProtocolID), _txFlags(TxFlags) {
+  const auto result =
+      _j2534.PassThruConnect(ProtocolID, Flags, Baudrate, _channelID);
   if (result != STATUS_NOERROR) {
-      std::string err(' ', 80);
+    std::string err(' ', 80);
     _j2534.PassThruGetLastError(err);
     throw std::runtime_error("Can't open channel: " + err);
   }
@@ -34,9 +34,9 @@ J2534_ERROR_CODE J2534Channel::writeMsgs(const std::vector<BaseMessage> &msgs,
                                          unsigned long &numMsgs,
                                          unsigned long Timeout) const {
   std::vector<PASSTHRU_MSG> messages;
-  for(const auto& msg: msgs) {
-      for(auto& passMsg: msg.toPassThruMsgs(_protocolId, _txFlags))
-          messages.emplace_back(std::move(passMsg));
+  for (const auto &msg : msgs) {
+    for (auto &passMsg : msg.toPassThruMsgs(_protocolId, _txFlags))
+      messages.emplace_back(std::move(passMsg));
   }
   return _j2534.PassThruWriteMsgs(_channelID, messages, numMsgs, Timeout);
 }
