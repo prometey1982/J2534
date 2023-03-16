@@ -2,16 +2,21 @@
 
 #include "J2534.hpp"
 
+#include "BaseMessage.hpp"
+
 namespace j2534 {
 class J2534Channel final {
 public:
   explicit J2534Channel(J2534 &j2534, unsigned long ProtocolID,
-                        unsigned long Flags, unsigned long Baudrate);
+                        unsigned long Flags, unsigned long Baudrate, unsigned long TxFlags);
   ~J2534Channel();
 
   J2534_ERROR_CODE readMsgs(std::vector<PASSTHRU_MSG> &msgs,
                             unsigned long Timeout = 1000) const;
   J2534_ERROR_CODE writeMsgs(const std::vector<PASSTHRU_MSG> &msgs,
+                             unsigned long &numMsgs,
+                             unsigned long Timeout = 1000) const;
+  J2534_ERROR_CODE writeMsgs(const std::vector<BaseMessage> &msgs,
                              unsigned long &numMsgs,
                              unsigned long Timeout = 1000) const;
   J2534_ERROR_CODE startPeriodicMsg(const PASSTHRU_MSG &msg,
@@ -33,6 +38,9 @@ public:
 
 private:
   J2534 &_j2534;
+  unsigned long _protocolId;
+  unsigned long _txFlags;
+
   unsigned long _channelID;
 };
 } // namespace j2534

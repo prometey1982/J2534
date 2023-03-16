@@ -159,6 +159,7 @@
     <ClCompile Include="J2534Channel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseMessage.hpp" />
     <ClInclude Include="J2534.hpp" />
     <ClInclude Include="J2534Channel.hpp" />
     <ClInclude Include="J2534_v0404.h" />
