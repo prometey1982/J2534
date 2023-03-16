@@ -30,14 +30,23 @@ J2534_ERROR_CODE J2534Channel::writeMsgs(const std::vector<PASSTHRU_MSG> &msgs,
   return _j2534.PassThruWriteMsgs(_channelID, msgs, numMsgs, Timeout);
 }
 
-J2534_ERROR_CODE J2534Channel::writeMsgs(const std::vector<BaseMessage> &msgs,
+J2534_ERROR_CODE J2534Channel::writeMsgs(const std::vector<BaseMessage *> &msgs,
                                          unsigned long &numMsgs,
                                          unsigned long Timeout) const {
   std::vector<PASSTHRU_MSG> messages;
   for (const auto &msg : msgs) {
-    for (auto &passMsg : msg.toPassThruMsgs(_protocolId, _txFlags))
+    for (auto &passMsg : msg->toPassThruMsgs(_protocolId, _txFlags))
       messages.emplace_back(std::move(passMsg));
   }
+  return _j2534.PassThruWriteMsgs(_channelID, messages, numMsgs, Timeout);
+}
+
+J2534_ERROR_CODE J2534Channel::writeMsgs(const BaseMessage &msg,
+                                         unsigned long &numMsgs,
+                                         unsigned long Timeout) const {
+  std::vector<PASSTHRU_MSG> messages;
+  for (auto &passMsg : msg.toPassThruMsgs(_protocolId, _txFlags))
+    messages.emplace_back(std::move(passMsg));
   return _j2534.PassThruWriteMsgs(_channelID, messages, numMsgs, Timeout);
 }
 

@@ -17,8 +17,10 @@ public:
   J2534_ERROR_CODE writeMsgs(const std::vector<PASSTHRU_MSG> &msgs,
                              unsigned long &numMsgs,
                              unsigned long Timeout = 1000) const;
-  J2534_ERROR_CODE writeMsgs(const std::vector<BaseMessage> &msgs,
+  J2534_ERROR_CODE writeMsgs(const std::vector<BaseMessage *> &msgs,
                              unsigned long &numMsgs,
+                             unsigned long Timeout = 1000) const;
+  J2534_ERROR_CODE writeMsgs(const BaseMessage &msgs, unsigned long &numMsgs,
                              unsigned long Timeout = 1000) const;
   J2534_ERROR_CODE startPeriodicMsg(const PASSTHRU_MSG &msg,
                                     unsigned long &msgID,
