@@ -138,12 +138,11 @@ J2534_ERROR_CODE J2534::PassThruReadVersion(std::string &firmwareVersion,
 
 J2534_ERROR_CODE
 J2534::PassThruGetLastError(std::string &errorDescription) const {
-  char *pErrorDescription = nullptr;
+  char buffer[512];
+  memset(buffer, 0, sizeof(buffer));
   const auto result =
-      static_cast<J2534_ERROR_CODE>(_PassThruGetLastError(pErrorDescription));
-  if (result == STATUS_NOERROR) {
-    errorDescription = pErrorDescription;
-  }
+      static_cast<J2534_ERROR_CODE>(_PassThruGetLastError(buffer));
+  errorDescription = buffer;
   return result;
 }
 

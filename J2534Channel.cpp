@@ -11,7 +11,7 @@ J2534Channel::J2534Channel(J2534 &j2534, unsigned long ProtocolID,
   const auto result =
       _j2534.PassThruConnect(ProtocolID, Flags, Baudrate, _channelID);
   if (result != STATUS_NOERROR) {
-    std::string err(' ', 80);
+    std::string err;
     _j2534.PassThruGetLastError(err);
     throw std::runtime_error("Can't open channel: " + err);
   }
