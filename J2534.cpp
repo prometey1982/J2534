@@ -75,6 +75,15 @@ J2534_ERROR_CODE J2534::PassThruReadMsgs(unsigned long ChannelID,
   return result;
 }
 
+J2534_ERROR_CODE J2534::PassThruReadMsgs(unsigned long ChannelID,
+                                         PASSTHRU_MSG* msgs,
+                                         unsigned long &numMsgs,
+                                         unsigned long Timeout) const {
+  const auto result = static_cast<J2534_ERROR_CODE>(
+      _PassThruReadMsgs(ChannelID, msgs, &numMsgs, Timeout));
+  return result;
+}
+
 J2534_ERROR_CODE J2534::PassThruWriteMsgs(unsigned long ChannelID,
                                           const std::vector<PASSTHRU_MSG> &msgs,
                                           unsigned long &numMsgs,
