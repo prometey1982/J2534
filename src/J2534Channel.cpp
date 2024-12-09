@@ -1,4 +1,4 @@
-#include "J2534Channel.hpp"
+#include "j2534/J2534Channel.hpp"
 
 #include <stdexcept>
 
