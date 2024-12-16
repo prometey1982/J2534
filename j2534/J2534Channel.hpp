@@ -22,6 +22,7 @@ public:
                              unsigned long Timeout = 1000) const;
   J2534_ERROR_CODE writeMsgs(const BaseMessage &msgs, unsigned long &numMsgs,
                              unsigned long Timeout = 1000) const;
+  J2534_ERROR_CODE writeMsg(const std::vector<uint8_t> &data, unsigned long Timeout = 1000) const;
   J2534_ERROR_CODE startPeriodicMsg(const PASSTHRU_MSG &msg,
                                     unsigned long &msgID,
                                     unsigned long TimeInterval) const;
@@ -38,6 +39,9 @@ public:
   J2534_ERROR_CODE clearTx() const;
 
   J2534_ERROR_CODE setConfig(const std::vector<SCONFIG> &config) const;
+
+  unsigned long getProtocolId() const;
+  unsigned long getTxFlags() const;
 
 private:
   J2534 &_j2534;

@@ -4,6 +4,22 @@
 
 namespace j2534 {
 
+namespace {
+
+std::vector<PASSTHRU_MSG> toPassThruMsgs(const std::vector<uint8_t>& data, unsigned long protocolId, unsigned long txFlags) {
+  PASSTHRU_MSG msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.ProtocolID = protocolId;
+  msg.TxFlags = txFlags;
+  msg.DataSize = data.size();
+  for (size_t i = 0; i < data.size(); ++i) {
+    msg.Data[i] = data[i];
+  }
+  return { msg };
+}
+
+}
+
 J2534Channel::J2534Channel(J2534 &j2534, unsigned long ProtocolID,
                            unsigned long Flags, unsigned long Baudrate,
                            unsigned long TxFlags)
@@ -50,6 +66,12 @@ J2534_ERROR_CODE J2534Channel::writeMsgs(const BaseMessage &msg,
   return _j2534.PassThruWriteMsgs(_channelID, messages, numMsgs, Timeout);
 }
 
+J2534_ERROR_CODE J2534Channel::writeMsg(const std::vector<uint8_t> &data,
+    unsigned long Timeout) const {
+    unsigned long numMsgs = 1;
+    return _j2534.PassThruWriteMsgs(_channelID, toPassThruMsgs(data, _protocolId, _txFlags), numMsgs, Timeout);
+}
+
 J2534_ERROR_CODE
 J2534Channel::startPeriodicMsg(const PASSTHRU_MSG &msg, unsigned long &msgID,
                                unsigned long TimeInterval) const {
@@ -93,6 +115,14 @@ J2534Channel::setConfig(const std::vector<SCONFIG> &config) const {
   configList.NumOfParams = config.size();
   configList.ConfigPtr = const_cast<SCONFIG *>(config.data());
   return passThruIoctl(SET_CONFIG, &configList);
+}
+
+unsigned long J2534Channel::getProtocolId() const {
+  return _protocolId;
+}
+
+unsigned long J2534Channel::getTxFlags() const {
+  return _txFlags;
 }
 
 } // namespace j2534
