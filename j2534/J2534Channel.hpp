@@ -44,11 +44,13 @@ namespace j2534 {
 
 		unsigned long getProtocolId() const;
 		unsigned long getTxFlags() const;
+		unsigned long getBaudrate() const;
 
 	private:
 		J2534& _j2534;
 		unsigned long _protocolId;
 		unsigned long _txFlags;
+		unsigned long _baudrate;
 
 		unsigned long _channelID;
 	};

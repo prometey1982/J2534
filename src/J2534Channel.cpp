@@ -23,7 +23,7 @@ namespace j2534 {
 	J2534Channel::J2534Channel(J2534& j2534, unsigned long ProtocolID,
 		unsigned long Flags, unsigned long Baudrate,
 		unsigned long TxFlags)
-		: _j2534{ j2534 }, _protocolId(ProtocolID), _txFlags(TxFlags) {
+		: _j2534{ j2534 }, _protocolId(ProtocolID), _txFlags(TxFlags), _baudrate(Baudrate) {
 		const auto result =
 			_j2534.PassThruConnect(ProtocolID, Flags, Baudrate, _channelID);
 		if (result != STATUS_NOERROR) {
@@ -146,5 +146,10 @@ namespace j2534 {
 	unsigned long J2534Channel::getTxFlags() const {
 		return _txFlags;
 	}
+
+	unsigned long J2534Channel::getBaudrate() const {
+		return _baudrate;
+	}
+
 
 } // namespace j2534
