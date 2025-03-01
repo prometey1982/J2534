@@ -4,6 +4,8 @@
 
 #include "BaseMessage.hpp"
 
+#include <functional>
+
 namespace j2534 {
 	class J2534Channel final {
 	public:
@@ -45,6 +47,13 @@ namespace j2534 {
 		unsigned long getProtocolId() const;
 		unsigned long getTxFlags() const;
 		unsigned long getBaudrate() const;
+
+        /**
+         * @brief Read messages from the channel while func returns true.
+         * @param func - Function which called on message receiving.
+         * @param Timeout - Read message timeout.
+         */
+        void readMsgs(const std::function<bool(const uint8_t* data, size_t length)> &func, unsigned long timeout = 1000) const;
 
 	private:
 		J2534& _j2534;

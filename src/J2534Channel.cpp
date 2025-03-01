@@ -151,5 +151,18 @@ namespace j2534 {
 		return _baudrate;
 	}
 
+    void J2534Channel::readMsgs(const std::function<bool(const uint8_t* data, size_t length)> &func,
+                                unsigned long timeout) const {
+        while(true) {
+            std::vector<PASSTHRU_MSG> msgs(1);
+            const auto readResult = readMsgs(msgs, timeout);
+            if(readResult != STATUS_NOERROR || msgs.size() == 0) {
+                throw std::runtime_error("Failed to read data from CAN channel");
+            }
+            if(!func(msgs[0].Data, msgs[0].DataSize)) {
+                break;
+            }
+        }
+    }
 
 } // namespace j2534
