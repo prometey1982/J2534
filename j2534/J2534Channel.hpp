@@ -12,7 +12,11 @@ namespace j2534 {
 		explicit J2534Channel(J2534& j2534, unsigned long ProtocolID,
 			unsigned long Flags, unsigned long Baudrate,
 			unsigned long TxFlags);
+        J2534Channel(const J2534Channel&) = delete;
+        J2534Channel(J2534Channel&&) = delete;
 		~J2534Channel();
+
+        J2534Channel& operator=(const J2534Channel&) = delete;
 
 		J2534_ERROR_CODE readMsgs(std::vector<PASSTHRU_MSG>& msgs,
 			unsigned long Timeout = 1000) const;
