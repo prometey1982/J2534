@@ -1,6 +1,8 @@
 #include "j2534/J2534Channel.hpp"
 
+#include <chrono>
 #include <stdexcept>
+#include <thread>
 
 namespace j2534 {
 
@@ -59,11 +61,21 @@ namespace j2534 {
 
 	J2534_ERROR_CODE J2534Channel::writeMsgs(const BaseMessage& msg,
 		unsigned long& numMsgs,
-		unsigned long Timeout) const {
-		std::vector<PASSTHRU_MSG> messages;
-		for (auto& passMsg : msg.toPassThruMsgs(_protocolId, _txFlags))
-			messages.emplace_back(std::move(passMsg));
-		return _j2534.PassThruWriteMsgs(_channelID, messages, numMsgs, Timeout);
+        unsigned long Timeout,
+        unsigned long DelayBetweenMessages) const {
+        std::vector<PASSTHRU_MSG> messages;
+        unsigned long numMsg = 0;
+        numMsgs = 0;
+        for (auto& passMsg : msg.toPassThruMsgs(_protocolId, _txFlags)) {
+            J2534_ERROR_CODE errorCode = _j2534.PassThruWriteMsgs(_channelID, {passMsg}, numMsg, Timeout);
+            if(errorCode != STATUS_NOERROR) {
+                return errorCode;
+            }
+            numMsgs += numMsg;
+            if(DelayBetweenMessages > 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(DelayBetweenMessages));
+            }
+        }
 	}
 
 	J2534_ERROR_CODE J2534Channel::writeMsg(const std::vector<uint8_t>& data,

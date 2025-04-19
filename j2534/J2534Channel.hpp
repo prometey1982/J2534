@@ -27,7 +27,7 @@ namespace j2534 {
 			unsigned long& numMsgs,
 			unsigned long Timeout = 1000) const;
 		J2534_ERROR_CODE writeMsgs(const BaseMessage& msgs, unsigned long& numMsgs,
-			unsigned long Timeout = 1000) const;
+            unsigned long Timeout = 1000, unsigned long DelayBetweenMessages = 0) const;
 		J2534_ERROR_CODE writeMsg(const std::vector<uint8_t>& data, unsigned long Timeout = 1000) const;
 		J2534_ERROR_CODE startPeriodicMsg(const PASSTHRU_MSG& msg,
 			unsigned long& msgID,
