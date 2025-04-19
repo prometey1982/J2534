@@ -76,6 +76,7 @@ namespace j2534 {
                 std::this_thread::sleep_for(std::chrono::milliseconds(DelayBetweenMessages));
             }
         }
+        return STATUS_NOERROR;
 	}
 
 	J2534_ERROR_CODE J2534Channel::writeMsg(const std::vector<uint8_t>& data,
