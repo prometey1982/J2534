@@ -93,9 +93,9 @@ namespace j2534 {
 
 	std::vector<unsigned long> J2534Channel::startPeriodicMsgs(const BaseMessage& msg,
 		unsigned long TimeInterval) const {
-		std::vector<PASSTHRU_MSG> messages;
-		for (auto& passMsg : msg.toPassThruMsgs(_protocolId, _txFlags))
-			messages.emplace_back(std::move(passMsg));
+        std::vector<PASSTHRU_MSG> messages;
+        for (const auto& passMsg : msg.toPassThruMsgs(_protocolId, _txFlags))
+            messages.push_back(passMsg);
 		std::vector<unsigned long> result;
 		for (const auto& message : messages) {
 			unsigned long msgID;
